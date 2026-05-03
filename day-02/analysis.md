@@ -93,10 +93,4 @@ Les régions problématiques sont celles qui combinent :
 - Difficulté : comprendre quand utiliser une sous-requête
 - Compréhension du lien entre logique SQL et logique business
 
----
 
-## 🧠 Bilan
-
-- Une requête doit être comprise, pas juste écrite  
-- Toujours identifier le niveau d’analyse (ligne vs groupe)  
-- L’agrégation est au cœur du métier de Data Analyst  
