@@ -1,6 +1,6 @@
 🗣 **Communication — 10 min**
 
-### Question du jour :
+### Question du jour 10 :
 
 Le directeur demande : ⚠️ Mot interdit : **« agrégation »**
 
