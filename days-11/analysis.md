@@ -1,0 +1,140 @@
+# Jour 11 — Analyser les performances régionales
+
+## 🎯 Objectif du jour
+
+Analyser les performances commerciales et opérationnelles des différentes régions.
+L'objectif est de comparer les régions, de repérer les écarts par rapport aux moyennes et d'identifier 
+celles qui nécessitent une attention particulière.
+
+---
+
+## 🔹 1. Ce que j'ai appris
+
+### Les CTE (WITH)
+
+- `WITH` permet de créer des requêtes temporaires appelées CTE.
+- Elles permettent de découper une analyse complexe en plusieurs étapes.
+- Elles rendent les requêtes plus lisibles et plus faciles à corriger.
+
+### Les jointures
+
+- `INNER JOIN` permet de relier les ventes ou les demandes aux clients.
+- `FULL OUTER JOIN` permet de conserver les régions présentes dans l'une ou l'autre des deux analyses.
+- `COALESCE()` permet de récupérer la première valeur non nulle parmi plusieurs colonnes.
+
+### Les fonctions de fenêtre
+
+- `AVG() OVER()` permet de calculer une moyenne sur plusieurs lignes sans regrouper les résultats en une seule ligne.
+- Cette fonction permet de comparer chaque région à la moyenne générale.
+- La soustraction entre le chiffre d'affaires régional et le chiffre d'affaires moyen permet de calculer un écart.
+
+### La classification avec CASE WHEN
+
+- `CASE WHEN` permet de créer des catégories selon des conditions.
+- Il permet de transformer des résultats numériques en informations plus faciles à interpréter.
+- Plusieurs conditions peuvent être combinées avec `AND`.
+
+---
+
+## 🔹 2. Les indicateurs étudiés
+
+J'ai calculé plusieurs indicateurs pour chaque région :
+
+- Le chiffre d'affaires total.
+- Le nombre de ventes.
+- Le panier moyen.
+- Le nombre de demandes.
+- Le nombre de clients ayant effectué une demande.
+- Le temps moyen de traitement.
+
+J'ai ensuite comparé le chiffre d'affaires et le temps moyen de traitement aux moyennes régionales.
+
+---
+
+## 🔹 3. Résultats obtenus
+
+| Région | Chiffre d'affaires | Temps moyen de traitement |
+|---|---:|---:|
+| Bordeaux | 400 € | 40 |
+| Lyon | 370 € | 27,67 |
+| Marseille | 125 € | 47,5 |
+| Paris | 820 € | 23,75 |
+
+Le chiffre d'affaires moyen des régions est de 428,75 €.
+Le temps moyen des moyennes régionales est d'environ 34,72.
+
+---
+
+## 🔹 4. Analyse métier
+
+### Paris
+
+Paris possède le chiffre d'affaires le plus élevé avec 820 €.
+
+Son temps moyen de traitement est également le plus faible avec 23,75.
+
+C'est la région qui présente les meilleurs résultats dans cette analyse.
+
+### Marseille
+
+Marseille possède le chiffre d'affaires le plus faible avec 125 €.
+
+Son temps moyen de traitement est le plus élevé avec 47,5.
+
+C'est la région qui mérite le plus d'attention.
+
+### Bordeaux
+
+Bordeaux possède un chiffre d'affaires de 400 €, légèrement inférieur à la moyenne.
+
+Son temps moyen de traitement est de 40, supérieur à la moyenne régionale.
+
+Cette région doit également être surveillée.
+
+### Lyon
+
+Lyon possède un chiffre d'affaires de 370 €, inférieur à la moyenne.
+
+Son temps moyen de traitement est de 27,67, inférieur à la moyenne régionale.
+
+La situation semble moins préoccupante sur le plan opérationnel.
+
+---
+
+## 🔹 5. Règle métier utilisée
+
+J'ai défini une règle pour identifier les régions prioritaires :
+
+Une région est considérée comme prioritaire si :
+
+- Son chiffre d'affaires est inférieur à la moyenne.
+- Son temps moyen de traitement est supérieur à la moyenne.
+
+Cette règle permet d'identifier Bordeaux et Marseille comme régions prioritaires.
+
+Marseille reste toutefois la région la plus préoccupante en raison de ses écarts plus importants.
+
+---
+
+## 🔹 6. Ce que je retiens
+
+Une analyse SQL ne consiste pas seulement à calculer des chiffres.
+
+Il faut également comparer les résultats, comprendre les écarts et les interpréter pour aider à la prise de décision.
+
+Les CTE permettent de structurer une analyse complexe.
+
+Les fonctions de fenêtre permettent de comparer chaque région à une moyenne globale.
+
+`CASE WHEN` permet enfin de transformer les résultats en catégories compréhensibles.
+
+---
+
+## 🔹 7. Limites de l'analyse et pistes d'amélioration
+
+Les résultats doivent être interprétés avec prudence, car certaines régions ont peu de demandes.
+Il serait intéressant d'étudier les demandes individuellement pour comprendre pourquoi certains temps de traitement sont plus élevés.
+
+Il faudrait également vérifier le nombre total de clients par région, y compris ceux qui n'ont pas effectué de demande.
+
+**Conclusion :** Marseille est la région à examiner en priorité, tandis que Bordeaux mérite également une surveillance.
