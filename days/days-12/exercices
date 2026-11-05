@@ -1,0 +1,117 @@
+```sql
+-- JOUR 12 : Analyser et classer les performances régionales
+-- Fonctions de classement : RANK(), DENSE_RANK() et ROW_NUMBER()
+
+
+-- Exercice 1 : Classement des régions selon leur chiffre d'affaires
+
+WITH stat_client AS (
+    SELECT
+        c.region,
+        SUM(v.montant) AS chiffre_affaires_region,
+
+        -- Classe les régions du chiffre d'affaires le plus élevé au plus faible
+        RANK() OVER (
+            ORDER BY SUM(v.montant) DESC
+        ) AS classement_desc
+
+    FROM formation_sql.clients AS c
+    INNER JOIN formation_sql.ventes AS v
+        ON c.id_client = v.id_client
+    GROUP BY c.region
+)
+
+SELECT
+    sc.region,
+    sc.chiffre_affaires_region,
+    sc.classement_desc
+FROM stat_client AS sc
+ORDER BY sc.classement_desc;
+
+
+-- Exercice 2 : Comparaison des fonctions de classement
+
+WITH stat_client AS (
+    SELECT
+        c.region,
+        SUM(v.montant) AS chiffre_affaires_region
+    FROM formation_sql.clients AS c
+    INNER JOIN formation_sql.ventes AS v
+        ON c.id_client = v.id_client
+    GROUP BY c.region
+)
+
+SELECT
+    sc.region,
+    sc.chiffre_affaires_region,
+
+    -- RANK attribue le même rang aux ex aequo,
+    -- puis laisse un écart dans les rangs suivants.
+    RANK() OVER (
+        ORDER BY sc.chiffre_affaires_region
+    ) AS classement_r,
+
+    -- DENSE_RANK attribue le même rang aux ex aequo,
+    -- sans laisser d'écart dans les rangs suivants.
+    DENSE_RANK() OVER (
+        ORDER BY sc.chiffre_affaires_region
+    ) AS classement_ds,
+
+    -- ROW_NUMBER attribue un numéro différent à chaque région.
+    ROW_NUMBER() OVER (
+        ORDER BY sc.chiffre_affaires_region, sc.region
+    ) AS classement
+
+FROM stat_client AS sc;
+
+
+-- Exercice 3 : Sélection des trois premières positions
+-- selon le chiffre d'affaires
+
+WITH stat_client AS (
+    SELECT
+        c.region,
+        SUM(v.montant) AS chiffre_affaires_region,
+
+        RANK() OVER (
+            ORDER BY SUM(v.montant) DESC
+        ) AS classement_desc
+
+    FROM formation_sql.clients AS c
+    INNER JOIN formation_sql.ventes AS v
+        ON c.id_client = v.id_client
+    GROUP BY c.region
+),
+
+classement_region AS (
+    SELECT
+        sc.region,
+        sc.chiffre_affaires_region,
+        sc.classement_desc,
+
+        RANK() OVER (
+            ORDER BY sc.chiffre_affaires_region
+        ) AS classement_r,
+
+        DENSE_RANK() OVER (
+            ORDER BY sc.chiffre_affaires_region
+        ) AS classement_ds,
+
+        ROW_NUMBER() OVER (
+            ORDER BY sc.chiffre_affaires_region, sc.region
+        ) AS classement
+
+    FROM stat_client AS sc
+)
+
+SELECT
+    region,
+    chiffre_affaires_region,
+    classement_desc,
+    classement_r,
+    classement_ds,
+    classement
+FROM classement_region AS cr
+WHERE classement_desc <= 3
+ORDER BY classement_desc, region;
+```
