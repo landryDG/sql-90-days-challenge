@@ -137,3 +137,13 @@ COUNT(DISTINCT d.id_client) AS nb_client
 ```
 
 Cette expression compte chaque client une seule fois dans le groupe étudié.
+
+---------------------------------------------------------------------------------
+jour 12 ;
+RANK() : attribue un rang ; en cas d'égalité, le rang suivant est sauté.
+
+DENSE_RANK() : attribue un rang ; en cas d'égalité, le rang suivant n'est pas sauté.
+
+ROW_NUMBER() : attribue un numéro unique à chaque ligne, même en cas d'égalité.
+
+
